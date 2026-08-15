@@ -20,7 +20,7 @@ services:
         fromService:
           type: worker
           name: lavalink
-          property: hostname
+          property: host
       - key: LAVALINK_PASSWORD
         sync: false
       - key: LAVALINK_PORT
