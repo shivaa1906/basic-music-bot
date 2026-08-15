@@ -24,9 +24,9 @@ services:
       - key: LAVALINK_PASSWORD
         sync: false
       - key: LAVALINK_PORT
-        value: 2333
+        value: 443
       - key: LAVALINK_SECURE
-        value: "false"
+        value: "true"
       - key: LAVALINK_NAME
         value: "Main Node"
       - key: SPOTIFY_CLIENT_ID

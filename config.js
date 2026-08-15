@@ -6,7 +6,9 @@ module.exports = {
         .map(id => id.trim())
         .filter(id => id.length > 0),
     nodes: [{
-        host: process.env.LAVALINK_HOST || "127.0.0.1",
+        // Strip protocol prefix (https://, wss://, etc.) in case Render's
+        // fromService "host" property includes the scheme
+        host: (process.env.LAVALINK_HOST || "127.0.0.1").replace(/^https?:\/\//, "").replace(/^wss?:\/\//, ""),
         password: process.env.LAVALINK_PASSWORD || "your-lavalink-password",
         port: parseInt(process.env.LAVALINK_PORT, 10) || 2333,
         secure: process.env.LAVALINK_SECURE === "true",
