@@ -1,5 +1,4 @@
 services:
-  # Discord Music Bot (web service — public URL for uptime pings)
   - type: web
     name: music-bot
     runtime: node
@@ -33,17 +32,9 @@ services:
         sync: false
       - key: SPOTIFY_CLIENT_SECRET
         sync: false
-      - key: RECONNECT_MAX_ATTEMPTS
-        value: 5
-      - key: RECONNECT_INITIAL_DELAY
-        value: 5000
-      - key: RECONNECT_MAX_DELAY
-        value: 60000
       - key: PORT
         value: 10000
 
-  # Lavalink Server (web service — free plan has no worker type)
-  # NO healthCheckPath — /v4/info requires auth and was causing deploy timeouts
   - type: web
     name: lavalink
     runtime: docker
@@ -54,3 +45,5 @@ services:
         sync: false
       - key: SERVER_PORT
         value: 2333
+</｜DSML｜tool>
+</｜DSML｜tion>
