@@ -163,6 +163,10 @@ client.on("messageCreate", async (message) => {
             const voiceChannel = message.member.voice.channel;
             if (!voiceChannel) return messages.error(message.channel, "Join a voice channel first!");
 
+            if (!client.riffy.nodes.size || ![...client.riffy.nodes.values()].some(n => n.connected)) {
+                return messages.error(message.channel, "❌ Lavalink is not connected! Please try again later.");
+            }
+
             const player = client.riffy.createConnection({
                 guildId: message.guild.id,
                 voiceChannel: voiceChannel.id,
@@ -191,6 +195,10 @@ client.on("messageCreate", async (message) => {
         case "play": {
             const query = args.join(" ");
             if (!query) return messages.error(message.channel, "Please provide a search query!");
+
+            if (!client.riffy.nodes.size || ![...client.riffy.nodes.values()].some(n => n.connected)) {
+                return messages.error(message.channel, "❌ Lavalink is not connected! Please try again later.");
+            }
 
             try {
                 const player = client.riffy.createConnection({
