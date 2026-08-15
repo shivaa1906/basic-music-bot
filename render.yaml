@@ -1,0 +1,55 @@
+services:
+  # Discord Music Bot
+  - type: web
+    name: music-bot
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: PREFIX
+        value: "!"
+      - key: DEVELOPER_IDS
+        sync: false
+      - key: EMBED_COLOR
+        value: "#0061ff"
+      - key: LAVALINK_HOST
+        fromService:
+          type: web
+          name: lavalink
+          property: host
+      - key: LAVALINK_PASSWORD
+        sync: false
+      - key: LAVALINK_PORT
+        value: 443
+      - key: LAVALINK_SECURE
+        value: "true"
+      - key: LAVALINK_NAME
+        value: "Main Node"
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+      - key: RECONNECT_MAX_ATTEMPTS
+        value: 5
+      - key: RECONNECT_INITIAL_DELAY
+        value: 5000
+      - key: RECONNECT_MAX_DELAY
+        value: 60000
+      - key: PORT
+        value: 10000
+
+  # Lavalink Server
+  - type: web
+    name: lavalink
+    runtime: docker
+    plan: free
+    dockerfilePath: ./lavalink/Dockerfile
+    envVars:
+      - key: LAVALINK_SERVER_PASSWORD
+        sync: false
+      - key: SERVER_PORT
+        value: 2333
