@@ -20,7 +20,7 @@ services:
         fromService:
           type: web
           name: lavalink
-          property: host
+          property: hostname
       - key: LAVALINK_PASSWORD
         sync: false
       - key: LAVALINK_PORT
@@ -48,6 +48,7 @@ services:
     runtime: docker
     plan: free
     dockerfilePath: ./lavalink/Dockerfile
+    healthCheckPath: /v4/info
     envVars:
       - key: LAVALINK_SERVER_PASSWORD
         sync: false
