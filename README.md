@@ -123,6 +123,42 @@ java -jar Lavalink.jar
 npm start
 ```
 
+## Deploy to Render
+
+This repository includes a [Render Blueprint](render.yaml) that deploys both the bot and a Lavalink server together.
+
+### One-click Deploy
+
+1. Push this repository to GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
+3. Connect your GitHub repo
+4. Render will detect `render.yaml` and create two services:
+   - `music-bot` — the Discord bot (Node.js)
+   - `lavalink` — the Lavalink audio server (Docker)
+5. Set the required environment variables when prompted:
+   - `BOT_TOKEN` — your Discord bot token
+   - `DEVELOPER_IDS` — your Discord user ID (comma-separated for multiple)
+   - `LAVALINK_PASSWORD` — a password for your Lavalink server
+   - `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` — for Spotify support
+6. Deploy and wait for both services to go live
+
+The bot automatically connects to the Lavalink service using Render's internal service hostname.
+
+### Manual Deploy (existing service)
+
+If you already have a bot service on Render:
+
+1. Add a new **Web Service** for Lavalink:
+   - **Runtime**: Docker
+   - **Dockerfile Path**: `lavalink/Dockerfile`
+   - **Environment Variables**:
+     - `LAVALINK_SERVER_PASSWORD` — your Lavalink password
+2. In your bot service's environment variables, set:
+   - `LAVALINK_HOST` — the Lavalink service name (e.g., `lavalink`)
+   - `LAVALINK_PORT` — `443`
+   - `LAVALINK_SECURE` — `true`
+   - `LAVALINK_PASSWORD` — same password as above
+
 ## Support
 
 If you encounter any issues or have questions, please:
