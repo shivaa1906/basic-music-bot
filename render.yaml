@@ -1,5 +1,5 @@
 services:
-  # Discord Music Bot (web service — needs a public URL for uptime pings)
+  # Discord Music Bot (web service — public URL for uptime pings)
   - type: web
     name: music-bot
     runtime: node
@@ -17,13 +17,16 @@ services:
       - key: EMBED_COLOR
         value: "#0061ff"
       - key: LAVALINK_HOST
-        value: lavalink
+        fromService:
+          type: web
+          name: lavalink
+          property: host
       - key: LAVALINK_PASSWORD
         sync: false
       - key: LAVALINK_PORT
-        value: 2333
+        value: 443
       - key: LAVALINK_SECURE
-        value: "false"
+        value: "true"
       - key: LAVALINK_NAME
         value: "Main Node"
       - key: SPOTIFY_CLIENT_ID
@@ -39,8 +42,9 @@ services:
       - key: PORT
         value: 10000
 
-  # Lavalink Server (background worker — no public port/health check required)
-  - type: worker
+  # Lavalink Server (web service — free plan has no worker type)
+  # NO healthCheckPath — /v4/info requires auth and was causing deploy timeouts
+  - type: web
     name: lavalink
     runtime: docker
     plan: free
