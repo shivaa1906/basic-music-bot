@@ -1,0 +1,18 @@
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Logs
+lavalink/logs/
+
+# OS files
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Local Lavalink jar (use Docker image or external host on Render)
+lavalink/Lavalink.jar
