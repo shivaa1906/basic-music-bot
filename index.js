@@ -36,6 +36,8 @@ const spotify = new Spotify({
 });
 
 // Riffy Player Setup
+console.log(`${emojis.info} Lavalink config: ${config.nodes.map(n => `${n.secure ? "wss" : "ws"}://${n.host}:${n.port}`).join(", ")}`);
+
 client.riffy = new Riffy(client, config.nodes, {
     send: (payload) => {
         const guild = client.guilds.cache.get(payload.d.guild_id);

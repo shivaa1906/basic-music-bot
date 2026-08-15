@@ -1,3 +1,34 @@
+// Parse LAVALINK_HOST into host/port/secure, supporting full URLs
+// like "https://lavalink.onrender.com" or "wss://example.com:443"
+function parseLavalinkHost(rawHost, envPort, envSecure) {
+    let host = (rawHost || "127.0.0.1").trim();
+    let port = parseInt(envPort, 10);
+    let secure = envSecure === "true";
+
+    // If host is a full URL, derive all settings
+    if (/^[a-z]+:\/\//i.test(host)) {
+        try {
+            const url = new URL(host);
+            if (url.protocol === "wss:" || url.protocol === "https:") secure = true;
+            if (url.protocol === "ws:" || url.protocol === "http:") secure = false;
+            if (url.port) port = parseInt(url.port, 10);
+            host = url.hostname;
+        } catch (e) {
+            // Fall through to default handling
+        }
+    }
+
+    if (!port || isNaN(port)) port = secure ? 443 : 2333;
+
+    return { host, port, secure };
+}
+
+const lavalink = parseLavalinkHost(
+    process.env.LAVALINK_HOST,
+    process.env.LAVALINK_PORT,
+    process.env.LAVALINK_SECURE
+);
+
 module.exports = {
     prefix: process.env.PREFIX || "!",
     // Developer user IDs allowed to use restricted commands (e.g., volume)
@@ -6,12 +37,10 @@ module.exports = {
         .map(id => id.trim())
         .filter(id => id.length > 0),
     nodes: [{
-        // Strip protocol prefix (https://, wss://, etc.) in case Render's
-        // fromService "host" property includes the scheme
-        host: (process.env.LAVALINK_HOST || "127.0.0.1").replace(/^https?:\/\//, "").replace(/^wss?:\/\//, ""),
+        host: lavalink.host,
         password: process.env.LAVALINK_PASSWORD || "your-lavalink-password",
-        port: parseInt(process.env.LAVALINK_PORT, 10) || 2333,
-        secure: process.env.LAVALINK_SECURE === "true",
+        port: lavalink.port,
+        secure: lavalink.secure,
         name: process.env.LAVALINK_NAME || "Main Node"
     }],
     spotify: {
