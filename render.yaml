@@ -17,10 +17,7 @@ services:
       - key: EMBED_COLOR
         value: "#0061ff"
       - key: LAVALINK_HOST
-        fromService:
-          type: worker
-          name: lavalink
-          property: host
+        value: lavalink
       - key: LAVALINK_PASSWORD
         sync: false
       - key: LAVALINK_PORT
